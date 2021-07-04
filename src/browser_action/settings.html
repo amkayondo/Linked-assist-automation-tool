@@ -1,0 +1,205 @@
+<html>
+<head>
+ <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+ <link rel="stylesheet" type="text/css" href="css/style.css"/> 
+ <style>
+   
+   
+   
+   
+ </style>
+ 
+ </head>
+<body ng-app="myapp" ng-controller="ctrl"> 
+<div class="">
+ <div style="padding:7px; box-shadow:3px 3px 10px #f4f4f4;" class="enter-email alert text-center">
+ <a style="text-decoration:none; " href="browser_action.html"> <h3 style="color:white; font-weight:bold"> Linked Assist  </h3> </a>
+   </div>
+   
+   
+   
+   <!-- Section 1 -->
+   
+   <div style="display:none; " class="col-md-12" id="section_1">
+   
+    
+     <ul class="nav nav-pills text-center" style="font-weight:bold" >
+	  <li class="active" style="width:49%;background-color: #f4f4f4"> <a data-toggle="tab"  href="#signin"> Register</a> </li>
+	  <li class="" style="width:49%; background-color: #f4f4f4"> <a data-toggle="tab" href="#login" > Sign In</a> </li>
+	 
+	 </ul>
+	 
+	 <div class="tab-content" style="margin-top:30px;">
+	 
+     <div id="signin" class="tab-pane fade in active" style="margin-top:10px;">
+	       
+		<form ng-submit="login_register($event)" action="javascript:void(0)" class="col s12">
+	    <div class="form-group"> 
+		   <!-- <label for="sname"> Full Name :  </label>
+		
+		   <input id="name" class="form-control" type="text" name="name" required />
+		   </div> -->
+	     
+		
+	    <div class="form-group"> 
+            <label for="semail"> Email :  </label>
+			
+		<input class="form-control" id="email" type="email" name="email" required />
+			</div>
+
+        
+	    <div class="form-group"> 
+		   <label for="spass"> Password :  </label>
+		
+		   <input class="form-control" id="password" type="password" name="password" required />
+		   </div>
+		
+		<input type="hidden" name="register" />
+
+        <input type="submit" class="btn enter-email wave-effect right green" value="Register"/>	
+   
+   </form>
+   
+    </div>
+	
+	 <div id="login"  class="tab-pane fade" >
+	    
+		<form ng-submit="login_register($event)" action="javascript:void(0)" class="col s12">
+		
+		
+	    <div class="form-group"> 
+		   <label for="lemail"> Email :  </label>
+		   <input id="lemail" class="form-control" type="email" name="email" required />
+		   
+		</div>
+        
+	    <div class="form-group"> 
+		   <label for="lpass"> Password :  </label>
+		   <input class="form-control" id="lpass" type="password" name="password"/>
+		   
+		</div>
+         
+		<input type="hidden" name="login" />
+ 
+        <input type="submit" class="btn login wave-effect right green" value="Login"/>		
+	  
+   </form>
+   
+    </div>
+	</div>
+   
+   </div>
+  
+  
+  <!--Section 2 -->
+  
+  <div id="section_2" style="display:none">
+  <div class="col-md-12" id="autoConnection">
+  <div class="hidden">
+
+   <h6 style="margin-top:0; font-size:12px; height:17px;" class="row"> 
+  
+  <div class="col-xs-3"><small> </small> <b> {{u.name}} </b> </div> 
+  <span class="col-xs-4"> <small> Days Remaining :</small> <b> {{u.cCredits}} </b> </span>
+
+ <div class="col-xs-3"> <button  style=" margin-top:-5px" ng-click="u.credit=0; moreCredits=true" class="btn btn-xs btn-warning"> Subscribe </button>  </div>
+  <div class="col-xs-2"> <a href="settings.html"> Settings </a></div>
+ </h6>
+ 
+ <hr>
+</div>
+     
+  
+    <span ng-show="u.credit>0 || process=='yes'">
+	<form action="javascript:void(0)" ng-submit="addMsg()">
+       <div class="form-group">
+	     <label> {{l=="german" ? "Nachricht hinzuf&uumlgen" : "Add Messages"}} </label>
+		 <input type="text" placeholder="Name" autocomplete="off" ng-model="msg_name" name="msg_name" class="form-control input-sm" required/>
+		 <br>
+		 <textarea class="form-control" autocomplete="off" placeholder="Message" style="height:60px" ng-model="msg_text" required></textarea>
+        <div style="margin-top:10px; float:right">		
+		
+		<input ng-if="!editMsgb" type="submit" value='{{l=="german" ? "Speichern" : "Add"}}' class="btn btn-primary btn-sm"/>
+		<input ng-if="editMsgb" type="submit" value="Update" class="btn enter-email btn-sm"/>
+		
+		</div>
+	   </div>
+	 </form> <br>
+	 
+	  <div ng-show="u.messages.length">
+	   <label> {{l=="german" ? "Nachrichtenvorlagen" : "My Messages" }} </label>
+	   <table style="border-radius:4px; font-size:12px" class="table table-sm table-bordered table-condensed"> 
+	   <tr class="text-center hidden"> 
+	    <th>Titel der Nachricht </th>
+	    <th> Text </th>
+	    <th> Bearbeiten </th>
+	    <th> L&oumlschen </th>
+	   </tr>
+	      <tr ng-repeat="x in u.messages | orderBy:'id'  track by $index"> 
+               <td class="col-sm-3"> {{x.msg_name}} </td>
+               <td class="col-sm-7"> {{x.msg_text}} </td>
+			   <td class="col-sm-1 text-center"> <a href="#" ng-click="editMsg(x.id)"> {{l=="german" ? "Bearbeiten" : "Edit" }} </a> </td>
+			   <td class="col-sm-1 text-center"> <a href="#" ng-click="deleteMsg(x.id)"> {{l=="german" ? "L&oumlschen" : "Delete" }} </a> </td>
+		  </tr>
+	   </table>
+	  
+	  
+	  </div>
+	 
+	 
+	 
+	 
+	 
+	 <br>
+	 <div class="row">
+	 <hr>
+	 </div> <br>
+	 <form action="javascript:void(0)" ng-submit="addSig()">
+       <div class="form-group">
+	     <label> {{l=="german" ? "Signatur hinzuf&uumlgen" : "Signature" }} </label>
+
+		 <textarea class="form-control" autocomplete="off" placeholder="Signature Message" style="height:60px" ng-model="msg_sig" ></textarea>
+        <div style="margin-top:10px;">		
+		<input type="submit" value='{{l=="german" ? "Speichern" : "Update"}}' class="btn enter-email btn-sm pull-right"/>
+		</div>
+	   </div>
+	 </form>
+	 
+	 </span>
+   
+   
+   <span style="display:block; margin-top:30px;" ng-show="u.credit<1 && process=='no'">
+	    <p class="alert alert-warning" ng-hide="moreCredits"> Subscription Expired !!!</p>
+	    <p class="alert alert-info" ng-show="moreCredits"> Get New Subscription !!!</p>
+		
+
+
+	  
+	  </span>
+</div>
+</div>
+
+<div style="height:40px; display:none">
+<div style="position:fixed; bottom:0; background-color:#efefef; padding:3px; width:100%; text-align:center;"> 
+
+  2018 	&#9400; Linked Assist | All Rights Reserved <br> 
+  
+  <a href="#"  style="margin-right:10px;"> Terms & Conditions </a> 
+  
+  <a href="#" > Contact </a>
+
+</div>
+</div>
+
+
+</div>
+</body>
+<script src="../../js/jquery.min.js"> </script>
+<script src="js/angular.min.js"> </script>
+<script src="js/bootstrap.min.js"> </script>
+<script src="js/browser_action.js"> </script>
+
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+</html>

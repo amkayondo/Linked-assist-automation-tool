@@ -1,0 +1,205 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+        .form-group label {
+            font-weight: 500;
+        }
+    </style>
+    
+</head>
+<body ng-app="myapp" ng-controller="ctrl">
+    <div class="">
+        <div style="padding:7px; box-shadow:4px 4px 5px #f4f4f4;" class="enter-email alert text-center">
+            <a style="text-decoration:none; " href="browser_action.html">
+                <h3 style="color:white; font-weight:bold"> Linked Assist </h3>
+            </a>
+        </div>
+        <!-- Section 1 -->
+        <div style="display:none; " class="col-md-12" id="section_1">
+            <!--
+		</br>
+         <form action="javascript:void(0)" ng-submit="validateLicense()">
+	   <div class="form-group">
+	      <label> 
+		  Enter Your License Key
+		  </label>
+		  
+		  <input type="text" class="form-control" ng-model="license_key" placeholder="L8598-WUE8R-SV1DY-XRP7Q" required />
+	   </div>
+       <button type="submit" class="btn btn-primary"> Submit </button>
+    </form>
+	 <br>
+	 <hr>
+	 
+	 <p class="text-center"> </br>
+	    <h3 class="text-center"> Need A License Key ? </h3> <br>
+	 <p class="text-center">  <a target="_blank" href="https://linked-assist.com/"><button class="btn btn-info "> Subscribe Now </button> </a> </p>
+	 </p>
+	-->
+            <div class="">
+                <p class="text text-primary"> Enter Your Email And Password</p>
+                <form ng-submit="login_register($event)" action="javascript:void(0)" class="col s12">
+                    <div class="form-group">
+                        <label for="lemail"> Email : </label>
+                        <input id="email" class="form-control input-sm" type="email" name="email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="lpass"> Password : </label>
+                        <input class="form-control input-sm" id="password" type="password" name="password" />
+                    </div>
+                    <input type="hidden" name="login" />
+                    <div class="">
+                        <input type="submit" class="btn login" id="login" style="width:49%" value="Login" />
+                        <button type="button" class="btn enter-email" data-toggle="modal" data-target="#myModal" style="width:49%"> Forgot Password ?</button>
+                    </div>
+                </form> <br>
+                <hr>
+                <br>
+                <div style="text-align:center">
+                    <h4> Haven't Registered Yet ?</h4>
+                    <a target="_blank" href="https://linked-assist.com/"> <button class="btn enter-email" style="width:250px"> Register Now </button> </a>
+                </div>
+            </div>
+        </div>
+        <!--Section 2 -->
+        <div id="section_2" style="display:none">
+            <div class="col-md-12" id="autoConnection">
+                <div>
+                    <h6 style="margin-top:0; font-size:12px; height:17px;" class="row">
+                        <div class="col-xs-5" style="padding-right:0"><small> Welcome :</small> <b> {{u.name}} </b> <small> ({{u.sub}})</small> </div>
+                        <span class="col-xs-4" style="padding:0"> <small> Days Remaining: </small> <b> {{u.cCredits>=4000 ? "Life_Time" : u.cCredits }} </b> </span>
+                        <!--<div class="col-xs-3 hidden" style="padding:0"> <button  style=" margin-top:-5px" ng-click="u.credit=0; moreCredits=true" class="btn btn-xs btn-warning"> Abonnieren </button>  </div> -->
+                        <div class="dropdown col-xs-2" style="margin-top:-5px;">
+                            <a href="#" class="dropdown-toggle btn btn-info btn-xs" data-toggle="dropdown"> Settings <i class="">&#9660; </i></a>
+                            <div class="dropdown-menu" style="left:-150px; font-size:14px;">
+                                <li> <a href="settings.html"> Add / Edit Messages Template </a> </li>
+                                <li> <a href="settings.html"> Add / Edit Signature </a> </li>
+                                <li> <a href="#" ng-click="changeLanguage('german')"> Change Language to German </a> </li>
+                                <li> <a href="#" ng-click="logout()"> Log Out </a> </li>
+                            </div>
+                        </div>
+                    </h6>
+                    <hr>
+                </div>
+                <span ng-show="u.credit>0 || process=='yes'">
+                    <div class="form-group">
+                        <label> Select Feature </label>
+                        <select id="features" class="form-control input-sm" ng-model="feature" style="font-size:12px;" ng-init="feature='1'">
+                            <option value="1"> Auto Connection </option>
+                            <option value="2" ng-hide="u.sub=='basic'"> Auto Messaging</option>
+                            <option value="3" ng-hide="u.sub=='basic'"> Auto Profile viewer & endorse of Skills </option>
+                            <!--<option value="4" ng-hide="u.sub=='basic'"> Auto Follow any profile  </option>-->
+                            <option value="6" ng-show="u.sub=='pro'">Visit Profile based on previously downloaded CSV </option>
+                            <option value="8" ng-show="u.sub=='pro'"> Message Profile based on previously downloaded CSV </option>
+                            <option value="7" ng-show="u.sub=='pro'"> Delete Requests </option>
+                            <!--<option value="9" ng-show="u.sub=='pro'"> Auto Connection to Suggested Connections </option>-->
+                            <!--<option value="10" ng-show="u.sub=='pro'"> Auto Connection to likers of a specific Post </option>-->
+                            <!--<option value="11" ng-show="u.sub=='pro'"> Auto Connection to commenters of a specific Post </option>-->
+                            <!--<option value="12" ng-show="u.sub=='pro'"> Congrates Feature </option>-->
+                            <option value="13" ng-show="u.sub=='pro'"> Message to Group Members </option>
+                        </select>
+                    </div>
+                    <hr>
+                    <form action="javascript:void(0)" id="autoConnectionForm">
+                        <div class="form-group" ng-if="feature!=6 && feature!=8">
+                            <label ng-hide="feature==7"> Number of Users </label>
+                            <label ng-show="feature==7"> Number of pages to be checked </label>
+                            <input type="number" name="numOfPages" id="numOfPages" class="form-control input-sm" required />
+                        </div>
+                        <div class="form-group" ng-show="feature==6 || feature==8">
+                            <label> Upload CSV File</label>
+                            <input class="form-control" type="file" name="myfile" id="myfile" />
+                        </div>
+                        <div class="form-group" ng-show="feature==12">
+                            <label> Congrates Type </label>
+                            <select class="form-control" id="custom">
+                                <option value="1"> Birthday </option>
+                                <option value="2"> New Position </option>
+                                <option value="3"> Endorsed of Skills </option>
+                                <option value="4"> Profile viewer </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label ng-show="feature==1 || feature==9 || feature==10 || feature==11">Time Interval Between each connection request in seconds(suggested min 30 seconds) </label>
+                            <label ng-show="feature==2 || feature==8 || feature==12 || feature==13">Time Interval Between each Message in seconds(suggested min 30 seconds) </label>
+                            <label ng-show="feature==3 || feature==6"> Time Interval Between each profile view in seconds(suggested min 30 seconds) </label>
+                            <label ng-show="feature==4"> Time Interval Between each profile Follow in seconds</label>
+                            <label ng-show="feature==5"> Time Interval between auto save to PDF in seconds</label>
+                            <label ng-show="feature==7"> Time Interval between each page in seconds </label>
+                            <input type="number" name="timeBwPages" id="timeBwPages" class="form-control input-sm" min="30" required />
+                        </div>
+                        <div class="form-group" ng-hide="feature==3 || feature==4 || feature==5 || feature==6 || feature==7">
+                            <label> Message Template </label>
+                            <select class="form-control input-sm" ng-model="messages_select">
+                                <option value=""> Select Message </option>
+                                <option ng-repeat="x in u.messages | orderBy:'id' track by $index" value="{{x.msg_text}}"> {{x.msg_name}} </option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-if="feature==7">
+                            <label> Delete Older Requests in Hours</label>
+                            <input type="number" class="form-control input-sm" value="24" name="personalNote" id="personalNote" />
+                        </div>
+                        <div class="form-group" ng-hide="feature==3 || feature==4 || feature==5 || feature==6 || feature==7">
+                            <label> Personal Message </label>
+                            <textarea ng-if="feature!=7" style="height:60px;" name="personalNote" id="personalNote" class="form-control" placeholder="Hi [firstname] how are you ?">{{messages_select+"\n\n"}}{{messages_select ? u.signature : ""}}</textarea>
+                        </div>
+                        <button type="submit" id="startAutoBB" class="btn enter-email btn-sm">Start Linked Assist </button>
+                        <button id="pauseOperation" style="display:none" type="button" class="btn btn-info btn-sm"> Stop </button>
+                        <hr>
+                        <div>
+                            <h3 class="text-center" style="font-size:14px;"><span id="counterConnectionCount"> </span> Operations were Performed</h3>
+                        </div>
+                    </form>
+                </span>
+                <span style="display:block; margin-top:30px;" ng-show="u.credit<1 && process=='no'">
+                    <div class="alert alert-warning"> <b> Your Subscription is Expired</b> </div>
+                    <div class="text-center"> <a href="https://linked-assist.com/" target="_blank"><button style="width:200px;" class="btn btn-primary"> Buy Now </button> </a></div>
+                </span>
+            </div>
+        </div>
+        <div style="height:40px;">
+            <div style="position:fixed; bottom:0; font-size:12px; background-color: #f4f4f4; padding:3px; width:100%; text-align:center;">
+                2020 &#9400; Linked Assist | All Rights Reserved <br> Proudly powered by <a target="_blank" href="https://pearllemon.com/" style="margin-right:10px;"> pearllemon</a>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Forgot Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="forgetPassword()" action="javascript:void(0)">
+                            <div class="form-group">
+                                <label> Enter Your Email</label>
+                                <input type="email" ng-model="p.email" class="form-control" required />
+                            </div>
+                            <input type="submit" value="Submit" class="btn enter-email" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/jquery.min.js">
+</script>
+<script src="js/angular.min.js">
+</script>
+<script src="js/bootstrap.min.js">
+</script>
+<script src="js/browser_action.js">
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+</html>
